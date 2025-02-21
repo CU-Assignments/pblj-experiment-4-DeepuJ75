@@ -1,0 +1,53 @@
+import java.util.*;
+
+public class CardCollection {
+    static HashMap<String, ArrayList<String>> cardMap = new HashMap<>();
+    static Scanner scanner = new Scanner(System.in);
+
+    public static void main(String[] args) {
+        while (true) {
+            System.out.println("\n1. Add Card\n2. Find Cards by Symbol\n3. Display All Cards\n4. Exit");
+            System.out.print("Choose an option: ");
+            int choice = scanner.nextInt();
+            switch (choice) {
+                case 1 -> addCard();
+                case 2 -> findCards();
+                case 3 -> displayCards();
+                case 4 -> {
+                    System.out.println("Exiting...");
+                    return;
+                }
+                default -> System.out.println("Invalid choice! Try again.");
+            }
+        }
+    }
+
+    static void addCard() {
+        System.out.print("Enter Card Name: ");
+        String name = scanner.next();
+        System.out.print("Enter Symbol: ");
+        String symbol = scanner.next();
+
+        cardMap.putIfAbsent(symbol, new ArrayList<>());
+        cardMap.get(symbol).add(name);
+        System.out.println("Card added successfully!");
+    }
+
+    static void findCards() {
+        System.out.print("Enter Symbol to search: ");
+        String symbol = scanner.next();
+        if (cardMap.containsKey(symbol)) {
+            System.out.println("Cards with symbol " + symbol + ": " + cardMap.get(symbol));
+        } else {
+            System.out.println("No cards found with this symbol.");
+        }
+    }
+
+    static void displayCards() {
+        if (cardMap.isEmpty()) {
+            System.out.println("No cards available!");
+        } else {
+            cardMap.forEach((symbol, cards) -> System.out.println(symbol + " -> " + cards));
+        }
+    }
+}
