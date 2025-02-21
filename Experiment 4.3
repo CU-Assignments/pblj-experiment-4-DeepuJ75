@@ -1,0 +1,39 @@
+import java.util.*;
+
+class TicketBooking extends Thread {
+    static int availableSeats = 10;
+    int seatsRequested;
+    String user;
+
+    TicketBooking(String user, int seatsRequested, int priority) {
+        this.user = user;
+        this.seatsRequested = seatsRequested;
+        setPriority(priority);
+    }
+
+    @Override
+    public void run() {
+        synchronized (TicketBooking.class) {
+            if (availableSeats >= seatsRequested) {
+                System.out.println(user + " booked " + seatsRequested + " seat(s).");
+                availableSeats -= seatsRequested;
+            } else {
+                System.out.println(user + " booking failed. Not enough seats.");
+            }
+        }
+    }
+}
+
+public class TicketBookingSystem {
+    public static void main(String[] args) {
+        TicketBooking vip1 = new TicketBooking("VIP_User1", 2, Thread.MAX_PRIORITY);
+        TicketBooking normal1 = new TicketBooking("User1", 4, Thread.NORM_PRIORITY);
+        TicketBooking vip2 = new TicketBooking("VIP_User2", 3, Thread.MAX_PRIORITY);
+        TicketBooking normal2 = new TicketBooking("User2", 3, Thread.NORM_PRIORITY);
+
+        vip1.start();
+        normal1.start();
+        vip2.start();
+        normal2.start();
+    }
+}
